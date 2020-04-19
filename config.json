@@ -1,0 +1,24 @@
+{
+  "globalTypes": [
+    {
+      "type": ".pdf",
+      "rules": [
+        { "minsize": 0, "maxsize": 50000, "destination": "C:\\temp\\files\\pdfs" }
+      ]
+    }
+  ],
+  "folders": [
+    {
+      "name": "Downloads",
+      "path": "C:\\downloads",
+      "types": [
+        {
+          "type": ".pdf",
+          "rules": [
+            { "minsize": 0, "maxsize": 50000, "destination": "C:\\temp\\pdfs" }
+          ]
+        }
+      ]
+    }
+  ]
+}
