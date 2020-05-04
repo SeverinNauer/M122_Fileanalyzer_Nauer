@@ -1,9 +1,7 @@
-Using module  .\Utils\types.psm1
+[reflection.assembly]::loadwithpartialname("System.Collections.Generic")
 
 function ImportConfig([string]$configPath) {
-    $config = [Config]::New()
-    $config.types = [System.Collections.Generic.List]::New()
-    return $config 
+    return Get-Content -Path $configPath | Out-String | ConvertFrom-Json
 }
 
 Export-ModuleMember -Function ImportConfig

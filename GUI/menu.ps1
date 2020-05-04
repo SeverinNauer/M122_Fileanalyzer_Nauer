@@ -13,8 +13,8 @@ function GenerateMenu {
     
     #region Generated Form Objects
     $form1 = New-Object System.Windows.Forms.Form
-    $button2 = New-Object System.Windows.Forms.Button
-    $button1 = New-Object System.Windows.Forms.Button
+    $configButton = New-Object System.Windows.Forms.Button
+    $runButton = New-Object System.Windows.Forms.Button
     $label2 = New-Object System.Windows.Forms.Label
     $label1 = New-Object System.Windows.Forms.Label
     $InitialFormWindowState = New-Object System.Windows.Forms.FormWindowState
@@ -30,25 +30,14 @@ function GenerateMenu {
     
     }
     
-    $handler_label2_Click = 
+    
+    $handler_configButton_Click = 
     {
         #TODO: Place custom script here
-    
+        GenerateConfig
     }
     
-    $handler_button2_Click = 
-    {
-        #TODO: Place custom script here
-    
-    }
-    
-    $handler_label1_Click = 
-    {
-        #TODO: Place custom script here
-    
-    }
-    
-    $handler_button1_Click = 
+    $handler_runButton_Click = 
     {
         #TODO: Place custom script here
     
@@ -71,42 +60,42 @@ function GenerateMenu {
     $form1.add_Load($handler_form1_Load)
     
     
-    $button2.DataBindings.DefaultDataSourceUpdateMode = 0
+    $configButton.DataBindings.DefaultDataSourceUpdateMode = 0
     
     $System_Drawing_Point = New-Object System.Drawing.Point
     $System_Drawing_Point.X = 176
     $System_Drawing_Point.Y = 73
-    $button2.Location = $System_Drawing_Point
-    $button2.Name = "button2"
+    $configButton.Location = $System_Drawing_Point
+    $configButton.Name = "configButton"
     $System_Drawing_Size = New-Object System.Drawing.Size
     $System_Drawing_Size.Height = 23
     $System_Drawing_Size.Width = 75
-    $button2.Size = $System_Drawing_Size
-    $button2.TabIndex = 3
-    $button2.Text = "config"
-    $button2.UseVisualStyleBackColor = $True
-    $button2.add_Click($handler_button2_Click)
+    $configButton.Size = $System_Drawing_Size
+    $configButton.TabIndex = 3
+    $configButton.Text = "config"
+    $configButton.UseVisualStyleBackColor = $True
+    $configButton.add_Click($handler_configButton_Click)
     
-    $form1.Controls.Add($button2)
+    $form1.Controls.Add($configButton)
     
     
-    $button1.DataBindings.DefaultDataSourceUpdateMode = 0
+    $runButton.DataBindings.DefaultDataSourceUpdateMode = 0
     
     $System_Drawing_Point = New-Object System.Drawing.Point
     $System_Drawing_Point.X = 26
     $System_Drawing_Point.Y = 73
-    $button1.Location = $System_Drawing_Point
-    $button1.Name = "button1"
+    $runButton.Location = $System_Drawing_Point
+    $runButton.Name = "runButton"
     $System_Drawing_Size = New-Object System.Drawing.Size
     $System_Drawing_Size.Height = 23
     $System_Drawing_Size.Width = 75
-    $button1.Size = $System_Drawing_Size
-    $button1.TabIndex = 2
-    $button1.Text = "Stop"
-    $button1.UseVisualStyleBackColor = $True
-    $button1.add_Click($handler_button1_Click)
+    $runButton.Size = $System_Drawing_Size
+    $runButton.TabIndex = 2
+    $runButton.Text = "Stop"
+    $runButton.UseVisualStyleBackColor = $True
+    $runButton.add_Click($handler_runButton_Click)
     
-    $form1.Controls.Add($button1)
+    $form1.Controls.Add($runButton)
     
     $label2.DataBindings.DefaultDataSourceUpdateMode = 0
     $label2.Font = New-Object System.Drawing.Font("Microsoft Sans Serif", 11.25, 0, 3, 1)
@@ -156,6 +145,5 @@ function GenerateMenu {
     
 } #End Function
     
-#Call the Function
-GenerateMenu
+. .\GUI\folders_config.ps1
     

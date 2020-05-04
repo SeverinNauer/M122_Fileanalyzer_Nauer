@@ -20,3 +20,9 @@ class Config {
     [System.Collections.Generic.List[Type]]$GlobalTypes
     [System.Collections.Generic.List[Folder]]$Folders
 }
+
+function CreateConfig(){
+    return [Config]::New()
+}
+
+Export-ModuleMember -Function CreateConfig

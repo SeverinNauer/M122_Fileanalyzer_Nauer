@@ -2,9 +2,11 @@
   "globalTypes": [
     {
       "type": ".pdf",
-      "rules": [
-        { "minsize": 0, "maxsize": 50000, "destination": "C:\\temp\\files\\pdfs" }
-      ]
+      "rules": {
+        "minsize": 0,
+        "maxsize": 50000,
+        "destination": "C:\\temp\\files\\pdfs"
+      }
     }
   ],
   "folders": [
@@ -14,9 +16,11 @@
       "types": [
         {
           "type": ".pdf",
-          "rules": [
-            { "minsize": 0, "maxsize": 50000, "destination": "C:\\temp\\pdfs" }
-          ]
+          "rules": {
+            "minsize": 0,
+            "maxsize": 50000,
+            "destination": "C:\\temp\\pdfs"
+          }
         }
       ]
     }
