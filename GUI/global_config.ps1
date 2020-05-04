@@ -33,7 +33,7 @@ function GenerateGlobalConfig {
     $handler_form1_Load= 
     {
         Import-Module ".\Utils\config.psm1" -Verbose -Force
-        $jsonConfig = (ImportConfig $configPath)
+        $jsonConfig = (ImportConfig $global:configPath)
         foreach($folder in $jsonConfig.global){
             $folderGrid.Rows.Add($folder.name,$folder.path)
         }

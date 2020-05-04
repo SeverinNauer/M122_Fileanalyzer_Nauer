@@ -39,8 +39,10 @@ function GenerateMenu {
     
     $handler_runButton_Click = 
     {
-        #TODO: Place custom script here
-    
+        $runButton.Text = if ($global:running) { "stop" } Else { "start" }
+        $label2.Text = if ($global:running) { "running" } Else { "stopped" }
+        $label2.ForeColor = if ($global:running) { [System.Drawing.Color]::FromArgb(255, 0, 192, 0) } Else { [System.Drawing.Color]::FromArgb(255, 255, 0, 0) } 
+        $global:running = !$global:running
     }
     
     $OnLoadForm_StateCorrection =
@@ -91,7 +93,7 @@ function GenerateMenu {
     $System_Drawing_Size.Width = 75
     $runButton.Size = $System_Drawing_Size
     $runButton.TabIndex = 2
-    $runButton.Text = "Stop"
+    $runButton.Text = if ($global:running) { "stop" } Else { "start" }
     $runButton.UseVisualStyleBackColor = $True
     $runButton.add_Click($handler_runButton_Click)
     
@@ -99,7 +101,7 @@ function GenerateMenu {
     
     $label2.DataBindings.DefaultDataSourceUpdateMode = 0
     $label2.Font = New-Object System.Drawing.Font("Microsoft Sans Serif", 11.25, 0, 3, 1)
-    $label2.ForeColor = [System.Drawing.Color]::FromArgb(255, 0, 192, 0)
+    $label2.ForeColor = if ($global:running) { [System.Drawing.Color]::FromArgb(255, 0, 192, 0) } Else { [System.Drawing.Color]::FromArgb(255, 255, 0, 0) } 
     
     $System_Drawing_Point = New-Object System.Drawing.Point
     $System_Drawing_Point.X = 80
@@ -111,7 +113,7 @@ function GenerateMenu {
     $System_Drawing_Size.Width = 100
     $label2.Size = $System_Drawing_Size
     $label2.TabIndex = 1
-    $label2.Text = "running"
+    $label2.Text = if ($global:running) { "running" } Else { "stopped" }
     $label2.add_Click($handler_label2_Click)
     
     $form1.Controls.Add($label2)

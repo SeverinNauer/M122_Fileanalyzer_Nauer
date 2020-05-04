@@ -14,12 +14,20 @@ function GenerateConfig {
     #region Generated Form Objects
     $form1 = New-Object System.Windows.Forms.Form
     $editButton = New-Object System.Windows.Forms.Button
-    $button2 = New-Object System.Windows.Forms.Button
+    $addButton = New-Object System.Windows.Forms.Button
     $buttonGlobal = New-Object System.Windows.Forms.Button
     $label1 = New-Object System.Windows.Forms.Label
     $folderGrid = New-Object System.Windows.Forms.DataGridView
     $InitialFormWindowState = New-Object System.Windows.Forms.FormWindowState
     #endregion Generated Form Objects
+
+    $fillGrid = { Import-Module ".\Utils\config.psm1" -Verbose -Force
+        $folderGrid.Rows.Clear()
+        $jsonConfig = (ImportConfig $configPath)
+        foreach ($folder in $jsonConfig.folders) {
+            $folderGrid.Rows.Add($folder.name, $folder.path)
+        } 
+    }
     
     #----------------------------------------------
     #Generated Event Script Blocks
@@ -27,9 +35,10 @@ function GenerateConfig {
     #Provide Custom Code for events specified in PrimalForms.
     $handler_editButton_Click = 
     {
-        if($folderGrid.SelectedRows.Count -gt 0){
+        if ($folderGrid.SelectedRows.Count -gt 0) {
             $item = $folderGrid.SelectedRows[0]
             GenerateFolderConfig -index $item.Index
+            
         }
     
     }
@@ -37,32 +46,22 @@ function GenerateConfig {
     $handler_form1_Load = 
     {
         #TODO: Place custom script here
-        Import-Module ".\Utils\config.psm1" -Verbose -Force
-        $jsonConfig = (ImportConfig $configPath)
-        foreach($folder in $jsonConfig.folders){
-            $folderGrid.Rows.Add($folder.name,$folder.path)
-        }
+        . $fillGrid
     }
     
-    $handler_label1_Click = 
+
+    
+    $handler_addButton_Click = 
     {
         #TODO: Place custom script here
-    
-    }
-    
-    $handler_folderGrid_CellContentClick = 
-    {
-    }
-    
-    $handler_button2_Click = 
-    {
-        #TODO: Place custom script here
-    
+        GenerateMonitoredFolder -new $true
+        . $fillGrid
     }
     
     $open_Global_Config = 
     {
         GenerateGlobalConfig
+        . $fillGrid
     }
     
     $OnLoadForm_StateCorrection =
@@ -102,24 +101,24 @@ function GenerateConfig {
     $form1.Controls.Add($editButton)
     
     
-    $button2.DataBindings.DefaultDataSourceUpdateMode = 0
-    $button2.Font = New-Object System.Drawing.Font("Microsoft Sans Serif", 9.75, 0, 3, 1)
+    $addButton.DataBindings.DefaultDataSourceUpdateMode = 0
+    $addButton.Font = New-Object System.Drawing.Font("Microsoft Sans Serif", 9.75, 0, 3, 1)
     
     $System_Drawing_Point = New-Object System.Drawing.Point
     $System_Drawing_Point.X = 421
     $System_Drawing_Point.Y = 285
-    $button2.Location = $System_Drawing_Point
-    $button2.Name = "button2"
+    $addButton.Location = $System_Drawing_Point
+    $addButton.Name = "addButton"
     $System_Drawing_Size = New-Object System.Drawing.Size
     $System_Drawing_Size.Height = 23
     $System_Drawing_Size.Width = 94
-    $button2.Size = $System_Drawing_Size
-    $button2.TabIndex = 3
-    $button2.Text = "Add folder"
-    $button2.UseVisualStyleBackColor = $True
-    $button2.add_Click($handler_button2_Click)
+    $addButton.Size = $System_Drawing_Size
+    $addButton.TabIndex = 3
+    $addButton.Text = "Add folder"
+    $addButton.UseVisualStyleBackColor = $True
+    $addButton.add_Click($handler_addButton_Click)
     
-    $form1.Controls.Add($button2)
+    $form1.Controls.Add($addButton)
     
     
     $buttonGlobal.DataBindings.DefaultDataSourceUpdateMode = 0
@@ -155,7 +154,6 @@ function GenerateConfig {
     $label1.Size = $System_Drawing_Size
     $label1.TabIndex = 1
     $label1.Text = "Monitored folders"
-    $label1.add_Click($handler_label1_Click)
     
     $form1.Controls.Add($label1)
     
@@ -186,14 +184,14 @@ function GenerateConfig {
     $System_Drawing_Size.Width = 504
     $folderGrid.Size = $System_Drawing_Size
     $folderGrid.TabIndex = 0
-    $folderGrid.add_CellContentClick($handler_folderGrid_CellContentClick)
 
     $folderGrid.add_CellMouseDoubleClick{
-        $folderGrid.SelectedRows | ForEach-Object{
+        $folderGrid.SelectedRows | ForEach-Object {
             $name = $_.Cells[0].Value
             $path = $_.Cells[1].Value
-            GenerateMonitoredFolder -name $name -path $path
+            GenerateMonitoredFolder -name $name -path $path -new $false -index $_.Index
         }
+        . $fillGrid
     }
     
     $form1.Controls.Add($folderGrid)

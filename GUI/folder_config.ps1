@@ -26,9 +26,17 @@ function GenerateFolderConfig {
     #endregion Generated Form Objects
 
     #region init
-    Import-Module ".\Utils\config.psm1" -Verbose -Force
-    $jsonConfig = (ImportConfig $configPath)
-    $selectedFolder = $jsonConfig.folders[$index]
+    
+
+    $fillGrid = { 
+        Import-Module ".\Utils\config.psm1" -Verbose -Force
+        $jsonConfig = (ImportConfig $configPath)
+        $selectedFolder = $jsonConfig.folders[$index]
+        $dataGridView1.Rows.Clear()
+        foreach ($type in $selectedFolder.types) {
+            $dataGridView1.Rows.Add($type.type, $type.rules.destination)
+        }
+    }
 
     #endregion
     
@@ -36,32 +44,32 @@ function GenerateFolderConfig {
     #Generated Event Script Blocks
     #----------------------------------------------
     #Provide Custom Code for events specified in PrimalForms.
-    $button2_OnClick= 
+    $button2_OnClick = 
     {
-    #TODO: Place custom script here
+        #TODO: Place custom script here
     
     }
     
-    $handler_label2_Click= 
+    $handler_label2_Click = 
     {
-    #TODO: Place custom script here
+        #TODO: Place custom script here
     
     }
     
-    $handler_label1_Click= 
+    $handler_label1_Click = 
     {
-    #TODO: Place custom script here
+        #TODO: Place custom script here
     
     }
     
-    $handler_button1_Click= 
+    $handler_button1_Click = 
     {
-    #TODO: Place custom script here
+        #TODO: Place custom script here
     
     }
     
-    $OnLoadForm_StateCorrection=
-    {#Correct the initial state of the form to prevent the .Net maximized form issue
+    $OnLoadForm_StateCorrection =
+    { #Correct the initial state of the form to prevent the .Net maximized form issue
         $form1.WindowState = $InitialFormWindowState
     }
     
@@ -77,7 +85,7 @@ function GenerateFolderConfig {
     
     
     $button2.DataBindings.DefaultDataSourceUpdateMode = 0
-    $button2.Font = New-Object System.Drawing.Font("Microsoft Sans Serif",9.75,0,3,1)
+    $button2.Font = New-Object System.Drawing.Font("Microsoft Sans Serif", 9.75, 0, 3, 1)
     
     $System_Drawing_Point = New-Object System.Drawing.Point
     $System_Drawing_Point.X = 363
@@ -97,7 +105,7 @@ function GenerateFolderConfig {
     
     
     $button1.DataBindings.DefaultDataSourceUpdateMode = 0
-    $button1.Font = New-Object System.Drawing.Font("Microsoft Sans Serif",9.75,0,3,1)
+    $button1.Font = New-Object System.Drawing.Font("Microsoft Sans Serif", 9.75, 0, 3, 1)
     
     $System_Drawing_Point = New-Object System.Drawing.Point
     $System_Drawing_Point.X = 362
@@ -116,7 +124,7 @@ function GenerateFolderConfig {
     $form1.Controls.Add($button1)
     
     $label2.DataBindings.DefaultDataSourceUpdateMode = 0
-    $label2.Font = New-Object System.Drawing.Font("Microsoft Sans Serif",9.75,1,3,1)
+    $label2.Font = New-Object System.Drawing.Font("Microsoft Sans Serif", 9.75, 1, 3, 1)
     
     $System_Drawing_Point = New-Object System.Drawing.Point
     $System_Drawing_Point.X = 12
@@ -140,17 +148,15 @@ function GenerateFolderConfig {
     $System_Windows_Forms_DataGridViewTextBoxColumn_1.Name = ""
     $System_Windows_Forms_DataGridViewTextBoxColumn_1.Width = 100
     
-    $dataGridView1.Columns.Add($System_Windows_Forms_DataGridViewTextBoxColumn_1)|Out-Null
+    $dataGridView1.Columns.Add($System_Windows_Forms_DataGridViewTextBoxColumn_1) | Out-Null
     $System_Windows_Forms_DataGridViewTextBoxColumn_2 = New-Object System.Windows.Forms.DataGridViewTextBoxColumn
     $System_Windows_Forms_DataGridViewTextBoxColumn_2.HeaderText = "Folder path"
     $System_Windows_Forms_DataGridViewTextBoxColumn_2.Name = ""
     $System_Windows_Forms_DataGridViewTextBoxColumn_2.Width = 300
     
-    $dataGridView1.Columns.Add($System_Windows_Forms_DataGridViewTextBoxColumn_2)|Out-Null
+    $dataGridView1.Columns.Add($System_Windows_Forms_DataGridViewTextBoxColumn_2) | Out-Null
     $dataGridView1.DataBindings.DefaultDataSourceUpdateMode = 0
-    foreach($type in $selectedFolder.types){
-        $dataGridView1.Rows.Add($type.type, $type.rules.destination)
-    }
+
     $System_Drawing_Point = New-Object System.Drawing.Point
     $System_Drawing_Point.X = 12
     $System_Drawing_Point.Y = 71
@@ -162,10 +168,11 @@ function GenerateFolderConfig {
     $dataGridView1.Size = $System_Drawing_Size
     $dataGridView1.TabIndex = 1
     
+    . $fillGrid
     $form1.Controls.Add($dataGridView1)
     
     $label1.DataBindings.DefaultDataSourceUpdateMode = 0
-    $label1.Font = New-Object System.Drawing.Font("Microsoft Sans Serif",12,0,3,1)
+    $label1.Font = New-Object System.Drawing.Font("Microsoft Sans Serif", 12, 0, 3, 1)
     
     $System_Drawing_Point = New-Object System.Drawing.Point
     $System_Drawing_Point.X = 12
@@ -189,8 +196,8 @@ function GenerateFolderConfig {
     #Init the OnLoad event to correct the initial state of the form
     $form1.add_Load($OnLoadForm_StateCorrection)
     #Show the Form
-    $form1.ShowDialog()| Out-Null
+    $form1.ShowDialog() | Out-Null
     
-    } #End Function
+} #End Function
     
     
