@@ -148,4 +148,5 @@ function GenerateMenu {
 } #End Function
     
 . .\GUI\folders_config.ps1
+. .\GUI\rule_config.ps1
     

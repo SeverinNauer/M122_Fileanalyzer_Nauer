@@ -7,11 +7,13 @@ function ImportConfig([string]$configPath) {
 function AddFolder($folder) {
     $config = ImportConfig $global:configPath
     $config.folders += $folder
-    $config | ConvertTo-Json -Depth 4 | Set-Content -Path $global:configPath
+    $config | ConvertTo-Json -Depth 10 | Set-Content -Path $global:configPath
 }
-function EditFolder($folder, $index) {
+function EditFolder($folder, $index, $withTypes = $false) {
     $config = ImportConfig $global:configPath
-    $folder.types = $config.folders[$index].types
+    if(-not $withTypes){
+        $folder.types = $config.folders[$index].types
+    }
     $config.folders[$index] = $folder
     $config | ConvertTo-Json -Depth 10 | Set-Content -Path $global:configPath
 }
@@ -20,10 +22,33 @@ function DeleteFolder($index) {
     $folders = [System.Collections.ArrayList] $config.folders
     $folders.RemoveAt($index)
     $config.folders = $folders.ToArray()
-    $config | ConvertTo-Json -Depth 4 | Set-Content -Path $global:configPath
+    $config | ConvertTo-Json -Depth 10 | Set-Content -Path $global:configPath
+}
+
+function AddGlobalRule($rule) {
+    $config = ImportConfig $global:configPath
+    $config.globalTypes += $rule
+    $config | ConvertTo-Json -Depth 10 | Set-Content -Path $global:configPath
+}
+
+function EditGlobalRule($rule, $index) {
+    $config = ImportConfig $global:configPath
+    $config.globalTypes[$index] = $rule
+    $config | ConvertTo-Json -Depth 10 | Set-Content -Path $global:configPath
+}
+
+function DeleteGlobalRule($index) {
+    $config = ImportConfig $global:configPath
+    $rules = [System.Collections.ArrayList] $config.globalTypes
+    $rules.RemoveAt($index)
+    $config.globalTypes = $rules.ToArray()
+    $config | ConvertTo-Json -Depth 10 | Set-Content -Path $global:configPath
 }
 
 Export-ModuleMember -Function ImportConfig
 Export-ModuleMember -Function AddFolder
 Export-ModuleMember -Function EditFolder
 Export-ModuleMember -Function DeleteFolder
+Export-ModuleMember -Function AddGlobalRule
+Export-ModuleMember -Function EditGlobalRule
+Export-ModuleMember -Function DeleteGlobalRule

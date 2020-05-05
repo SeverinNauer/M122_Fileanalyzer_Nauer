@@ -40,16 +40,11 @@ function GenerateMonitoredFolder {
         $form1.Close()
     }
     
-    $handler_label2_Click = 
-    {
-        #TODO: Place custom script here
-    
-    }
 
     $deleteButton_OnClick = 
     {
         Import-Module ".\Utils\config.psm1" -Verbose -Force
-        if(-Not $new){
+        if (-Not $new) {
             DeleteFolder $index
         }
         $form1.Close()
@@ -60,16 +55,16 @@ function GenerateMonitoredFolder {
         $form1.Close()
         Import-Module ".\Utils\config.psm1" -Verbose -Force
         $folder = New-Object psobject -Property @{name = $nameBox.Text; path = $pathBox.Text; types = @() }
-        if($new){
+        if ($new) {
             AddFolder $folder
-        }else{
+        }
+        else {
             EditFolder $folder $index
         }
     }
     
     $handler_pathpicker_Click = 
     {
-        #TODO: Place custom script here
         Import-Module ".\Utils\pathpicker.psm1" -Verbose -Force
         $path = PickPath
         
@@ -201,7 +196,6 @@ function GenerateMonitoredFolder {
     $label2.Size = $System_Drawing_Size
     $label2.TabIndex = 2
     $label2.Text = "Path:"
-    $label2.add_Click($handler_label2_Click)
     
     $form1.Controls.Add($label2)
     
@@ -251,5 +245,4 @@ function GenerateMonitoredFolder {
     $form1.ShowDialog() | Out-Null
     
 } #End Function
-    
     

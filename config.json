@@ -1,42 +1,57 @@
 {
-  "globalTypes": [
-    {
-      "type": ".pdf",
-      "rules": {
-        "minsize": 0,
-        "maxsize": 50000,
-        "destination": "C:\\temp\\files\\pdfs"
-      }
-    }
-  ],
-  "folders": [
-    {
-      "path": "C:\\downloads",
-      "types": [
-        {
-          "type": ".pdf",
-          "rules": {
-            "minsize": 0,
-            "maxsize": 50000,
-            "destination": "C:\\temp\\files\\pdfs"
-          }
-        }
-      ],
-      "name": "Downloads"
-    },
-    {
-      "path": "D:\\temp",
-      "types": [
-        {
-          "type": ".pdf",
-          "rules": {
-            "minsize": 0,
-            "maxsize": 50000,
-            "destination": "C:\\temp\\files\\pdfs"
-          }
-        }
-      ],
-      "name": "Temp"
-    }
-  ]
+    "globalTypes":  [
+                        {
+                            "type":  ".pdf",
+                            "rules":  {
+                                          "destination":  "C:\\temp\\files\\pdfs",
+                                          "maxsize":  4999,
+                                          "minsize":  0
+                                      }
+                        }
+                    ],
+    "folders":  [
+                    {
+                        "path":  "C:\\downloads",
+                        "types":  [
+                                      {
+                                          "type":  ".pdf",
+                                          "rules":  {
+                                                        "minsize":  0,
+                                                        "maxsize":  5000,
+                                                        "destination":  "C:\\temp\\files\\pdfs"
+                                                    }
+                                      }
+                                  ],
+                        "name":  "Downloads"
+                    },
+                    {
+                        "path":  "D:\\temp",
+                        "types":  [
+                                      {
+                                          "type":  ".pdfs",
+                                          "rules":  {
+                                                        "destination":  "C:\\temp\\files\\pdfs",
+                                                        "maxsize":  5000,
+                                                        "minsize":  0
+                                                    }
+                                      },
+                                      {
+                                          "type":  ".jpg",
+                                          "rules":  {
+                                                        "destination":  "\\\\ISEFS01\\Benutzer$\\severin.nauer\\Desktop",
+                                                        "maxsize":  5000,
+                                                        "minsize":  0
+                                                    }
+                                      }
+                                  ],
+                        "name":  "Temp"
+                    },
+                    {
+                        "path":  "\\\\ISEFS01\\Benutzer$\\severin.nauer\\Downloads",
+                        "types":  [
+
+                                  ],
+                        "name":  "Desktop"
+                    }
+                ]
 }
