@@ -45,6 +45,12 @@ function DeleteGlobalRule($index) {
     $config | ConvertTo-Json -Depth 10 | Set-Content -Path $global:configPath
 }
 
+function SetLastId($lastId){
+    $config = ImportConfig $global:configPath
+    $config.lastId = $lastId
+    $config | ConvertTo-Json -Depth 10 | Set-Content -Path $global:configPath
+}
+
 Export-ModuleMember -Function ImportConfig
 Export-ModuleMember -Function AddFolder
 Export-ModuleMember -Function EditFolder
@@ -52,3 +58,4 @@ Export-ModuleMember -Function DeleteFolder
 Export-ModuleMember -Function AddGlobalRule
 Export-ModuleMember -Function EditGlobalRule
 Export-ModuleMember -Function DeleteGlobalRule
+Export-ModuleMember -Function SetLastId

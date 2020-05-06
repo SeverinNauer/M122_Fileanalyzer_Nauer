@@ -1,4 +1,5 @@
 {
+    "lastId":  13184,
     "globalTypes":  [
                         {
                             "type":  ".pdf",
@@ -11,7 +12,7 @@
                     ],
     "folders":  [
                     {
-                        "path":  "C:\\downloads",
+                        "path":  "D:\\downloads",
                         "types":  [
                                       {
                                           "type":  ".pdf",
@@ -45,13 +46,6 @@
                                       }
                                   ],
                         "name":  "Temp"
-                    },
-                    {
-                        "path":  "\\\\ISEFS01\\Benutzer$\\severin.nauer\\Downloads",
-                        "types":  [
-
-                                  ],
-                        "name":  "Desktop"
                     }
                 ]
 }

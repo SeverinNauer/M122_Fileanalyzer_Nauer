@@ -39,10 +39,21 @@ function GenerateMenu {
     
     $handler_runButton_Click = 
     {
+        Import-Module ".\Utils\config.psm1" -Verbose -Force
+        $global:running = !$global:running
         $runButton.Text = if ($global:running) { "stop" } Else { "start" }
         $label2.Text = if ($global:running) { "running" } Else { "stopped" }
         $label2.ForeColor = if ($global:running) { [System.Drawing.Color]::FromArgb(255, 0, 192, 0) } Else { [System.Drawing.Color]::FromArgb(255, 255, 0, 0) } 
-        $global:running = !$global:running
+        if($global:running){
+            $process = Start-Process -filePath "powershell" -ArgumentList "D:\dev\github\fileAnalyzer\service.ps1" -WindowStyle Hidden -PassThru
+            setLastId($process.Id)
+        }else{
+            $jsonConfig = (ImportConfig $configPath)
+            setLastId(0)
+            if($jsonConfig.lastId -gt 0){
+                Get-Process -Id  $jsonConfig.lastId| Stop-Process
+            }
+        }
     }
     
     $OnLoadForm_StateCorrection =
@@ -79,6 +90,16 @@ function GenerateMenu {
     $configButton.add_Click($handler_configButton_Click)
     
     $form1.Controls.Add($configButton)
+
+    Import-Module ".\Utils\config.psm1" -Verbose -Force
+    $jsonConfig = (ImportConfig $configPath)
+
+    if($jsonConfig.lastId -gt 0){
+        $process = Get-Process -Id $jsonConfig.lastId
+        if($null -ne $process){
+            $global:running = $true
+        }
+    } 
     
     
     $runButton.DataBindings.DefaultDataSourceUpdateMode = 0
@@ -134,10 +155,13 @@ function GenerateMenu {
     $label1.Text = "Status:"
     $label1.add_Click($handler_label1_Click)
     
+    
     $form1.Controls.Add($label1)
     
     #endregion Generated Form Code
     
+
+
     #Save the initial state of the form
     $InitialFormWindowState = $form1.WindowState
     #Init the OnLoad event to correct the initial state of the form
@@ -149,4 +173,5 @@ function GenerateMenu {
     
 . .\GUI\folders_config.ps1
 . .\GUI\rule_config.ps1
+
     
