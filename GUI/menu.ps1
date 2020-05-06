@@ -53,7 +53,10 @@ function GenerateMenu {
             $jsonConfig = (ImportConfig $configPath)
             setLastId(0)
             if ($jsonConfig.lastId -gt 0) {
-                Get-Process -Id  $jsonConfig.lastId | Stop-Process
+                $process = Get-Process -Id  $jsonConfig.lastId
+                if ($null -ne $process) {
+                    $process | Stop-Process
+                }
             }
         }
     }
