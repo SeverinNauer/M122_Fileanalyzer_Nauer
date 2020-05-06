@@ -44,14 +44,16 @@ function GenerateMenu {
         $runButton.Text = if ($global:running) { "stop" } Else { "start" }
         $label2.Text = if ($global:running) { "running" } Else { "stopped" }
         $label2.ForeColor = if ($global:running) { [System.Drawing.Color]::FromArgb(255, 0, 192, 0) } Else { [System.Drawing.Color]::FromArgb(255, 255, 0, 0) } 
-        if($global:running){
-            $process = Start-Process -filePath "powershell" -ArgumentList "D:\dev\github\fileAnalyzer\service.ps1" -WindowStyle Hidden -PassThru
+        
+        if ($global:running) {
+            $process = Start-Process -filePath "powershell" -ArgumentList $global:servicePath -WindowStyle Hidden -PassThru
             setLastId($process.Id)
-        }else{
+        }
+        else {
             $jsonConfig = (ImportConfig $configPath)
             setLastId(0)
-            if($jsonConfig.lastId -gt 0){
-                Get-Process -Id  $jsonConfig.lastId| Stop-Process
+            if ($jsonConfig.lastId -gt 0) {
+                Get-Process -Id  $jsonConfig.lastId | Stop-Process
             }
         }
     }
@@ -94,9 +96,9 @@ function GenerateMenu {
     Import-Module ".\Utils\config.psm1" -Verbose -Force
     $jsonConfig = (ImportConfig $configPath)
 
-    if($jsonConfig.lastId -gt 0){
+    if ($jsonConfig.lastId -gt 0) {
         $process = Get-Process -Id $jsonConfig.lastId
-        if($null -ne $process){
+        if ($null -ne $process) {
             $global:running = $true
         }
     } 
