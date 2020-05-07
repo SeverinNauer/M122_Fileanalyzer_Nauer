@@ -1,4 +1,7 @@
-#Generated Form Function
+<# Config window of specific folder
+   --------------------------------
+   Author: Severin Nauer           
+#>
 function GenerateFolderConfig {
 
     param (
@@ -13,6 +16,7 @@ function GenerateFolderConfig {
     #region Import the Assemblies
     [reflection.assembly]::loadwithpartialname("System.Windows.Forms") | Out-Null
     [reflection.assembly]::loadwithpartialname("System.Drawing") | Out-Null
+    Import-Module ".\GUI\rule_config.psm1"
     #endregion
     
     #region Generated Form Objects
@@ -26,9 +30,8 @@ function GenerateFolderConfig {
 
     #region init
     
-
+    #Fills the grid with rules of selected folder
     $fillGrid = { 
-        Import-Module ".\Utils\config.psm1" -Verbose -Force
         $jsonConfig = (ImportConfig $configPath)
         $selectedFolder = $jsonConfig.folders[$index]
         $ruleGrid.Rows.Clear()
@@ -45,20 +48,9 @@ function GenerateFolderConfig {
     #Provide Custom Code for events specified in PrimalForms.
     $addButton_OnClick = 
     {
+        #Generate Rule Config view with isNew Param 
         GenerateRuleConfig -folderIndex $index -isNew $true -isGlobal $false
         . $fillGrid
-    }
-    
-    $handler_label2_Click = 
-    {
-        #TODO: Place custom script here
-    
-    }
-    
-    $handler_label1_Click = 
-    {
-        #TODO: Place custom script here
-    
     }
     
     $OnLoadForm_StateCorrection =
@@ -120,7 +112,6 @@ function GenerateFolderConfig {
     $label2.Size = $System_Drawing_Size
     $label2.TabIndex = 2
     $label2.Text = "Rules"
-    $label2.add_Click($handler_label2_Click)
     
     $form1.Controls.Add($label2)
     
@@ -157,8 +148,10 @@ function GenerateFolderConfig {
     $label1.DataBindings.DefaultDataSourceUpdateMode = 0
     $label1.Font = New-Object System.Drawing.Font("Microsoft Sans Serif", 12, 0, 3, 1)
 
+    #OnDoubleClick on RuleGrid Item
     $ruleGrid.add_CellMouseDoubleClick{
         $ruleGrid.SelectedRows | ForEach-Object {
+            #Generate Rule Config form for selected Rule
             GenerateRuleConfig -folderIndex $index -index $_.Index -isNew $false -isGlobal $false
         }
         . $fillGrid
@@ -175,7 +168,6 @@ function GenerateFolderConfig {
     $label1.Size = $System_Drawing_Size
     $label1.TabIndex = 0
     $label1.Text = "Folder: " + $selectedFolder.name
-    $label1.add_Click($handler_label1_Click)
     
     $form1.Controls.Add($label1)
     
@@ -186,8 +178,15 @@ function GenerateFolderConfig {
     #Init the OnLoad event to correct the initial state of the form
     $form1.add_Load($OnLoadForm_StateCorrection)
     #Show the Form
+
+    #Disable Resize
+    $form1.FormBorderStyle = 3
+    $form1.MaximizeBox = $false
+
     $form1.ShowDialog() | Out-Null
     
 } #End Function
+
+Export-ModuleMember -Function GenerateFolderConfig
     
     

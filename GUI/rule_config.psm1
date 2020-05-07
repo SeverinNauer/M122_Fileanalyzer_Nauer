@@ -1,4 +1,7 @@
-#Generated Form Function
+<# Window to change Rule
+   --------------------------------
+   Author: Severin Nauer           
+#>
 function GenerateRuleConfig {
 
     param(
@@ -35,6 +38,7 @@ function GenerateRuleConfig {
     $InitialFormWindowState = New-Object System.Windows.Forms.FormWindowState
     #endregion Generated Form Objects
 
+    #Fills Data of form to a new object
     $getRuleFromData = {
         return New-Object psobject -Property @{
             type  = $typeBox.Text
@@ -52,9 +56,10 @@ function GenerateRuleConfig {
     #Provide Custom Code for events specified in PrimalForms.
     $saveButton_OnClick = 
     {
-        Import-Module ".\Utils\config.psm1" -Verbose -Force
         $rule = . $getRuleFromData
+        #isGlobal decicdes on where to save the rule in the config file
         if (-not $isGlobal) {
+            #if isNew -> add new rule to already existing folder : else -> edit existing rule on already existing folder
             if ($isNew) {
                 $Script:selectedFolder.types += $rule
                 EditFolder $Script:selectedFolder -index $folderIndex -withTypes $true
@@ -65,6 +70,7 @@ function GenerateRuleConfig {
             }
         }
         else {
+            #if isNew -> Add rule to global rules in config : else -> Edit existing global rule in config
             if ($isNew) {
                 AddGlobalRule $rule
             }
@@ -75,7 +81,8 @@ function GenerateRuleConfig {
         $form1.Close()
     
     }
-    
+
+    #Opens the path picker and writes the value into the textbox
     $handler_pathPicker_Click = 
     {
         Import-Module ".\Utils\pathpicker.psm1" -Verbose -Force
@@ -88,7 +95,6 @@ function GenerateRuleConfig {
     
     $handler_deleteButton_Click = 
     {
-        Import-Module ".\Utils\config.psm1" -Verbose -Force
         if (-not $isNew) {
             if (-not $isGlobal) {
                 $rules = [System.Collections.ArrayList]$Script:selectedFolder.types
@@ -109,12 +115,6 @@ function GenerateRuleConfig {
         $form1.Close()
     }
 
-
-    
-
-    
-
-    
     $OnLoadForm_StateCorrection =
     { #Correct the initial state of the form to prevent the .Net maximized form issue
         $form1.WindowState = $InitialFormWindowState
@@ -335,8 +335,9 @@ function GenerateRuleConfig {
     #endregion Generated Form Code
 
     #region fillData
-    Import-Module ".\Utils\config.psm1" -Verbose -Force
-    $jsonConfig = (ImportConfig $configPath)
+    #fills the data from the config to the UI
+    $jsonConfig = (ImportConfig $global:configPath)
+    #Selects the rule from specific folder or from the global config
     if (-not $isGlobal) {
         $Script:selectedFolder = $jsonConfig.folders[$folderIndex]
         if (-not $isNew) {
@@ -348,6 +349,8 @@ function GenerateRuleConfig {
             $Script:selectedRule = $jsonConfig.globalTypes[$index]
         }
     }
+
+    #fills the data from the selectedRule to the ui
     if (-not $isNew) {
         $typeBox.Text = $Script:selectedRule.type
         $destBox.Text = $Script:selectedRule.rules.destination
@@ -367,9 +370,13 @@ function GenerateRuleConfig {
     $InitialFormWindowState = $form1.WindowState
     #Init the OnLoad event to correct the initial state of the form
     $form1.add_Load($OnLoadForm_StateCorrection)
+    #Disable Resize
+    $form1.FormBorderStyle = 3
+    $form1.MaximizeBox = $false
     #Show the Form
     $form1.ShowDialog() | Out-Null
     
 } #End Function
     
+Export-ModuleMember -Function GenerateRuleConfig
     

@@ -1,4 +1,7 @@
-#Generated Form Function
+<# Monitored folder View
+   --------------------------------
+   Author: Severin Nauer           
+#>
 function GenerateMonitoredFolder {
 
     param (
@@ -43,8 +46,8 @@ function GenerateMonitoredFolder {
 
     $deleteButton_OnClick = 
     {
-        Import-Module ".\Utils\config.psm1" -Verbose -Force
         if (-Not $new) {
+            #Deletes the opened Folder in the config json
             DeleteFolder $index
         }
         $form1.Close()
@@ -52,20 +55,21 @@ function GenerateMonitoredFolder {
     
     $handler_saveButton_Click = 
     {
-        $form1.Close()
-        Import-Module ".\Utils\config.psm1" -Verbose -Force
         $folder = New-Object psobject -Property @{name = $nameBox.Text; path = $pathBox.Text; types = @() }
+        #Adds a folder if $new or replaces existing folder with new values 
         if ($new) {
             AddFolder $folder
         }
         else {
             EditFolder $folder $index
         }
+        $form1.Close()
     }
-    
+    #Opens the path picker and writes the value into the textbox
     $handler_pathpicker_Click = 
     {
-        Import-Module ".\Utils\pathpicker.psm1" -Verbose -Force
+        Import-Module ".\Utils\pathpicker.psm1"
+        
         $path = PickPath
         
         if ($path.Length -gt 0) {
@@ -230,6 +234,7 @@ function GenerateMonitoredFolder {
     $label1.Text = "Name:"
     $label1.add_Click($handler_label1_Click)
 
+    #fills name and path from params to ui
     $nameBox.Text = $name
     $pathBox.Text = $path
     
@@ -241,8 +246,13 @@ function GenerateMonitoredFolder {
     $InitialFormWindowState = $form1.WindowState
     #Init the OnLoad event to correct the initial state of the form
     $form1.add_Load($OnLoadForm_StateCorrection)
+    #Disable Resize
+    $form1.FormBorderStyle = 3
+    $form1.MaximizeBox = $false
     #Show the Form
     $form1.ShowDialog() | Out-Null
     
 } #End Function
-    
+
+
+Export-ModuleMember -Function GenerateMonitoredFolder

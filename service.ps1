@@ -1,12 +1,12 @@
+<# The Service that applies de defined rules
+   Runs in Background and registeres FileSystemWatchers
+   --------------------------------
+   Author: Severin Nauer           
+#>
 
-function startService {
-    $action = New-ScheduledTaskAction -Execute "Powershell"  -Argument "-WindowStyle Hidden `"$PSScriptRoot\service.ps1"
-    $trigger = New-ScheduledTaskTrigger -Once -RepetitionInterval (New-TimeSpan -Minutes 1) -At (Get-Date)
-    Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "fileAnalyzer"
-}
-
+#the main function of the service
+#Applies the rules to the folders when started and registeres the FileSystemWatchers for each Folder in the config
 function run{
-    $global:handlers = @()
     $configPath = [string]::Format("{0}\config.json",$PSScriptRoot)
     $modulePath = [string]::Format("{0}\Utils\config.psm1",$PSScriptRoot)
     $functionsPath = [string]::Format("{0}\Utils\serviceFunctions.psm1",$PSScriptRoot)
@@ -24,14 +24,13 @@ function run{
     }
 }
 
-
+#Function to register the filesystemwatchers
 function registerFileWatcher($folder) {
     if(Test-Path -Path $folder.path){
         $watcher = New-Object System.IO.FileSystemWatcher
         $watcher.Path = $folder.path
         $watcher.EnableRaisingEvents = $true
         $action = {
-            Write-Host "Action"
             $configPath = [string]::Format("{0}\config.json",$PSScriptRoot)
             $modulePath = [string]::Format("{0}\Utils\config.psm1",$PSScriptRoot)
             $functionsPath = [string]::Format("{0}\Utils\serviceFunctions.psm1",$PSScriptRoot)
@@ -43,8 +42,7 @@ function registerFileWatcher($folder) {
                 applyRules $folder
             }
         } 
-        $global:handlers += Register-ObjectEvent -InputObject $watcher -EventName Created -Action $action
-        Write-Host "Registered"
+        Register-ObjectEvent -InputObject $watcher -EventName Created -Action $action
     }
 }
 

@@ -1,3 +1,8 @@
+<# Global Config View
+   --------------------------------
+   Author: Severin Nauer           
+#>
+
 #Generated Form Function
 function GenerateGlobalConfig {
     ########################################################################
@@ -9,6 +14,7 @@ function GenerateGlobalConfig {
     #region Import the Assemblies
     [reflection.assembly]::loadwithpartialname("System.Windows.Forms") | Out-Null
     [reflection.assembly]::loadwithpartialname("System.Drawing") | Out-Null
+    Import-Module ".\GUI\rule_config.psm1"
     #endregion
     
     #region Generated Form Objects
@@ -25,8 +31,8 @@ function GenerateGlobalConfig {
     #----------------------------------------------
     #Provide Custom Code for events specified in PrimalForms.
     
+    #Fills the grid of GlobalRules with data from config
     $fillGrid = { 
-        Import-Module ".\Utils\config.psm1" -Verbose -Force
         $jsonConfig = (ImportConfig $configPath)
         $ruleGrid.Rows.Clear()
         foreach ($type in $jsonConfig.globalTypes) {
@@ -36,6 +42,7 @@ function GenerateGlobalConfig {
 
     $addButton_OnClick = 
     {
+        #Opens rule config with isnew parameter
         GenerateRuleConfig -isGlobal $true -isNew $true
         . $fillGrid
     }
@@ -138,8 +145,10 @@ function GenerateGlobalConfig {
     
     $form1.Controls.Add($label1)
 
+    #On Doubleclick of globalrule in Grid
     $ruleGrid.add_CellMouseDoubleClick{
         $ruleGrid.SelectedRows | ForEach-Object {
+            #Generates the rule config with index of selectedRule
             GenerateRuleConfig -index $_.Index -isNew $false -isGlobal $true
         }
         . $fillGrid
@@ -153,10 +162,12 @@ function GenerateGlobalConfig {
     $InitialFormWindowState = $form1.WindowState
     #Init the OnLoad event to correct the initial state of the form
     $form1.add_Load($OnLoadForm_StateCorrection)
+    #Disable Resize
+    $form1.FormBorderStyle = 3
+    $form1.MaximizeBox = $false
     #Show the Form
     $form1.ShowDialog() | Out-Null
     
 } #End Function
     
-#Call the Function
-    
+Export-ModuleMember -Function GenerateGlobalConfig    
