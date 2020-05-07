@@ -92,16 +92,19 @@ function GenerateMenu {
     
     $form1.Controls.Add($configButton)
 
-
     #checks if last process of the service is still running
-    $jsonConfig = (ImportConfig $configPath)
+    $getCurrentState = {
+        $jsonConfig = (ImportConfig $configPath)
+        if ($jsonConfig.lastId -gt 0) {
+            $process = Get-Process -Id $jsonConfig.lastId
+            if ($null -ne $process) {
+                $global:running = $true
+            }
+        } 
+    }
 
-    if ($jsonConfig.lastId -gt 0) {
-        $process = Get-Process -Id $jsonConfig.lastId
-        if ($null -ne $process) {
-            $global:running = $true
-        }
-    } 
+    . $getCurrentState
+   
     
     
     $runButton.DataBindings.DefaultDataSourceUpdateMode = 0

@@ -12,7 +12,7 @@ function ImportConfig([string]$configPath) {
 
 #saves a config object into the config json file
 function SaveConfig($config){
-    $config | ConvertTo-Json -Depth | Set-Content -Path $global:configPath
+    $config | ConvertTo-Json -Depth 10 | Set-Content -Path $global:configPath
 }
 
 #Adds a folder to the config json

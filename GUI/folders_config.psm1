@@ -49,10 +49,7 @@ function GenerateConfig {
         }
     }
     
-    $handler_form1_Load = 
-    {
-        . $fillGrid
-    }
+
     
 
     $handler_addButton_Click = 
@@ -200,6 +197,8 @@ function GenerateConfig {
         }
         . $fillGrid
     }
+
+    . $fillGrid
     
     $form1.Controls.Add($folderGrid)
     

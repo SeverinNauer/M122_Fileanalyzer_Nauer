@@ -10,4 +10,4 @@ function PickPath () {
     return $FolderBrowser.SelectedPath
 }
 
-Export-Module -function PickPath
+Export-ModuleMember -function PickPath

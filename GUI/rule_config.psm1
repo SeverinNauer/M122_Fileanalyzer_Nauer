@@ -48,8 +48,7 @@ function GenerateRuleConfig {
                 destination = $destBox.Text
             }
         }
-    }
-    
+    }    
     #----------------------------------------------
     #Generated Event Script Blocks
     #----------------------------------------------
@@ -107,7 +106,6 @@ function GenerateRuleConfig {
             }
         }
         $form1.Close()
-    
     }
     
 
@@ -334,35 +332,40 @@ function GenerateRuleConfig {
     
     #endregion Generated Form Code
 
+
     #region fillData
-    #fills the data from the config to the UI
-    $jsonConfig = (ImportConfig $global:configPath)
-    #Selects the rule from specific folder or from the global config
-    if (-not $isGlobal) {
-        $Script:selectedFolder = $jsonConfig.folders[$folderIndex]
-        if (-not $isNew) {
-            $Script:selectedRule = $Script:selectedFolder.types[$index]
+    $fillData = {
+        #fills the data from the config to the UI
+        $jsonConfig = (ImportConfig $global:configPath)
+        #Selects the rule from specific folder or from the global config
+        if (-not $isGlobal) {
+            $Script:selectedFolder = $jsonConfig.folders[$folderIndex]
+            if (-not $isNew) {
+                $Script:selectedRule = $Script:selectedFolder.types[$index]
+            }
         }
-    }
-    else {
+        else {
+            if (-not $isNew) {
+                $Script:selectedRule = $jsonConfig.globalTypes[$index]
+            }
+        }
+
+        #fills the data from the selectedRule to the ui
         if (-not $isNew) {
-            $Script:selectedRule = $jsonConfig.globalTypes[$index]
+            $typeBox.Text = $Script:selectedRule.type
+            $destBox.Text = $Script:selectedRule.rules.destination
+            $minBox.Value = $Script:selectedRule.rules.minsize
+            $maxBox.Value = $Script:selectedRule.rules.maxsize
+        }
+        else {
+            $typeBox.Text = ""
+            $destBox.Text = ""
+            $minBox.Value = 0
+            $maxBox.Value = 0
         }
     }
 
-    #fills the data from the selectedRule to the ui
-    if (-not $isNew) {
-        $typeBox.Text = $Script:selectedRule.type
-        $destBox.Text = $Script:selectedRule.rules.destination
-        $minBox.Value = $Script:selectedRule.rules.minsize
-        $maxBox.Value = $Script:selectedRule.rules.maxsize
-    }
-    else {
-        $typeBox.Text = ""
-        $destBox.Text = ""
-        $minBox.Value = 0
-        $maxBox.Value = 0
-    }
+    . $fillData
 
     #endregion
     
