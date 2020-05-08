@@ -1,51 +1,43 @@
 {
-    "lastId":  9188,
-    "globalTypes":  [
-                        {
-                            "type":  ".pdf",
-                            "rules":  {
-                                          "destination":  "C:\\temp\\files\\pdfs",
-                                          "maxsize":  4999,
-                                          "minsize":  0
-                                      }
-                        }
-                    ],
-    "folders":  [
-                    {
-                        "path":  "D:\\Downloads",
-                        "types":  [
-                                      {
-                                          "type":  ".pdf",
-                                          "rules":  {
-                                                        "destination":  "C:\\temp\\files\\pdfs2",
-                                                        "maxsize":  5000,
-                                                        "minsize":  0
-                                                    }
-                                      }
-                                  ],
-                        "name":  "Downloads"
-                    },
-                    {
-                        "path":  "D:\\temp",
-                        "types":  [
-                                      {
-                                          "type":  ".pdfs",
-                                          "rules":  {
-                                                        "destination":  "C:\\temp\\files\\pdfs",
-                                                        "maxsize":  5000,
-                                                        "minsize":  0
-                                                    }
-                                      },
-                                      {
-                                          "type":  ".jpg",
-                                          "rules":  {
-                                                        "destination":  "\\\\ISEFS01\\Benutzer$\\severin.nauer\\Desktop",
-                                                        "maxsize":  5000,
-                                                        "minsize":  0
-                                                    }
-                                      }
-                                  ],
-                        "name":  "Temp"
-                    }
-                ]
+  "lastId": 11296,
+  "globalTypes": [
+    {
+      "type": ".pdf",
+      "rules": {
+        "destination": "C:\\temp\\files\\pdfs",
+        "maxsize": 4999,
+        "minsize": 0
+      }
+    }
+  ],
+  "folders": [
+    {
+      "path": "D:\\Downloads",
+      "types": [
+        {
+          "type": ".pdf",
+          "rules": {
+            "destination": "C:\\temp\\files\\ziel",
+            "maxsize": 5000,
+            "minsize": 0
+          }
+        }
+      ],
+      "name": "Downloads"
+    },
+    {
+      "path": "D:\\temp",
+      "types": [
+        {
+          "type": ".jpg",
+          "rules": {
+            "destination": "\\\\ISEFS01\\Benutzer$\\severin.nauer\\Desktop",
+            "maxsize": 5000,
+            "minsize": 0
+          }
+        }
+      ],
+      "name": "Temp"
+    }
+  ]
 }
